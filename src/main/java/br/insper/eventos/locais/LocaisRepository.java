@@ -1,2 +1,4 @@
-package br.insper.eventos.locais;public interface LocaisRepository {
+package br.insper.eventos.locais;
+
+public interface LocaisRepository {
 }

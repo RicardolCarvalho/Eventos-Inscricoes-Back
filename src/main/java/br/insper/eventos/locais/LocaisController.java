@@ -1,2 +1,4 @@
-package br.insper.eventos.locais;public class LocaisController {
+package br.insper.eventos.locais;
+
+public class LocaisController {
 }
