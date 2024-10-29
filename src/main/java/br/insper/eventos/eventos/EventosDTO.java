@@ -1,11 +1,7 @@
 package br.insper.eventos.eventos;
 
-record CadastrasEventosDTO
-        (String nome, String endereco, String dataehora){
-}
+import java.util.ArrayList;
 
-record RetornarEventosDTO
-        (String id, String nome, String endereco, String dataehora){
-}
+record CadastrarEventoDTO(String nome, String endereco, String dataHora, Integer capacidade) {}
 
-
+record RetornarEventoDTO(String id, String nome, String endereco, String dataHora, Integer capacidade, ArrayList<String> participantes) {}

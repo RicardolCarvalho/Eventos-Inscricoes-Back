@@ -1,35 +1,44 @@
 package br.insper.eventos.eventos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@Document(collection = "eventos")
 public class Eventos {
     @Id
     private String id;
     private String nome;
     private String endereco;
-    private String dataehora;
-    @Transient
-    @JsonIgnore
-    private ArrayList<Eventos> locais = new ArrayList<>();
+    private String dataHora;
+    private Integer capacidade;
+    private ArrayList<String> participantes = new ArrayList<>();
 
-    public ArrayList<Eventos> getEventos() {return locais;}
+    // Getters e Setters
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    public String getNome() {return nome;}
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public void setNome(String nome) {this.nome = nome;}
+    public String getEndereco() { return endereco; }
+    public void setEndereco(String endereco) { this.endereco = endereco; }
 
-    public String getEndereco() {return endereco;}
+    public String getDataHora() { return dataHora; }
+    public void setDataHora(String dataHora) { this.dataHora = dataHora; }
 
-    public void setEndereco(String endereco) {this.endereco = endereco;}
+    public Integer getCapacidade() { return capacidade; }
+    public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
 
-    public String getCapacidadde() {return dataehora;}
+    public ArrayList<String> getParticipantes() { return participantes; }
+    public void setParticipantes(ArrayList<String> participantes) { this.participantes = participantes; }
 
-    public void setCapacidadde(String capacidadde) {this.dataehora = capacidadde;}
-
-    public void setEventos(ArrayList<Eventos> eventos) {this.eventos = eventos;}
+    public boolean adicionarParticipante(String participante) {
+        if (this.participantes.size() >= this.capacidade) {
+            return false;
+        }
+        this.participantes.add(participante);
+        return true;
+    }
 }
