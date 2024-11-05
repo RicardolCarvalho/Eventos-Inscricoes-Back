@@ -40,6 +40,8 @@ public class EventosController {
     @PostMapping("/{id}/participantes")
     @ResponseStatus(HttpStatus.CREATED)
     public void adicionarParticipante(@PathVariable String id, @RequestBody String participante) {
-        eventosService.adicionarParticipante(id, participante);
+        // Remove quaisquer aspas e espaços extras
+        String email = participante.replaceAll("[\"{}]", "").trim();
+        eventosService.adicionarParticipante(id, email);
     }
 }

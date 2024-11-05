@@ -10,7 +10,8 @@ public class Eventos {
     @Id
     private String id;
     private String nome;
-    private String endereco;
+    private String localId;     // Referência ao local cadastrado
+    private String localNome;   // Nome do local onde o evento ocorrerá
     private String dataHora;
     private Integer capacidade;
     private ArrayList<String> participantes = new ArrayList<>();
@@ -22,8 +23,11 @@ public class Eventos {
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
-    public String getEndereco() { return endereco; }
-    public void setEndereco(String endereco) { this.endereco = endereco; }
+    public String getLocalId() { return localId; }
+    public void setLocalId(String localId) { this.localId = localId; }
+
+    public String getLocalNome() { return localNome; }
+    public void setLocalNome(String localNome) { this.localNome = localNome; }
 
     public String getDataHora() { return dataHora; }
     public void setDataHora(String dataHora) { this.dataHora = dataHora; }

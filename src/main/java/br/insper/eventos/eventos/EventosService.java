@@ -1,5 +1,7 @@
 package br.insper.eventos.eventos;
 
+import br.insper.eventos.locais.Locais;
+import br.insper.eventos.locais.LocaisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +17,9 @@ public class EventosService {
     @Autowired
     private EventosRepository eventosRepository;
 
+    @Autowired
+    private LocaisService locaisService;
+
     public RetornarEventoDTO cadastrarEvento(CadastrarEventoDTO dto) {
         if (dto.nome() == null || dto.nome().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O nome do evento é obrigatório.");
@@ -24,9 +29,20 @@ public class EventosService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A capacidade deve ser maior que zero.");
         }
 
+        if (dto.localId() == null || dto.localId().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O local do evento é obrigatório.");
+        }
+
+        // Obtém o local pelo localId para adicionar o nome do local
+        Locais local = locaisService.buscarLocal(dto.localId());
+        if (local == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Local não encontrado.");
+        }
+
         Eventos evento = new Eventos();
         evento.setNome(dto.nome());
-        evento.setEndereco(dto.endereco());
+        evento.setLocalId(dto.localId());
+        evento.setLocalNome(local.getNome()); // Define o nome do local
         evento.setDataHora(dto.dataHora());
         evento.setCapacidade(dto.capacidade());
 
@@ -34,12 +50,15 @@ public class EventosService {
         return new RetornarEventoDTO(
                 evento.getId(),
                 evento.getNome(),
-                evento.getEndereco(),
+                evento.getLocalId(),
+                evento.getLocalNome(),
                 evento.getDataHora(),
                 evento.getCapacidade(),
                 evento.getParticipantes()
         );
     }
+
+
 
     public Page<Eventos> listarEventos(String nome, Pageable pageable) {
         if (nome != null) {
