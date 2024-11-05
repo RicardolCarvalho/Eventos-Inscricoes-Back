@@ -19,13 +19,18 @@ public class Locais {
     @JsonIgnore
     private ArrayList<Eventos> eventos = new ArrayList<>();
 
-    public ArrayList<Eventos> getEventos() { return eventos; }
+    public String getId() { return id; } // Getter para o ID
+    public void setId(String id) { this.id = id; }
+
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
+
     public String getEndereco() { return endereco; }
     public void setEndereco(String endereco) { this.endereco = endereco; }
-    public Integer getCapacidadde() { return capacidade; }
+
+    public Integer getCapacidade() { return capacidade; } // Nome do getter corrigido
     public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
+
+    public ArrayList<Eventos> getEventos() { return eventos; }
     public void setEventos(ArrayList<Eventos> eventos) { this.eventos = eventos; }
-    public void setCapacidadde(Integer capacidadde) { this.capacidade = capacidadde; }
 }

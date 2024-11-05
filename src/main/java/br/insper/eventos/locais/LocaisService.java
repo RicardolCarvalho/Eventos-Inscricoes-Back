@@ -1,6 +1,7 @@
 package br.insper.eventos.locais;
 
 import br.insper.eventos.eventos.Eventos;
+import br.insper.eventos.eventos.EventosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,9 @@ public class LocaisService {
     @Autowired
     private LocaisRepository locaisRepository;
 
+    @Autowired
+    private EventosRepository eventosRepository;
+
     // Método para cadastrar um novo local
     public RetornarLocaisDTO cadastrarLocal(CadastraLocaisDTO dto) {
         Locais local = new Locais();
@@ -24,7 +28,7 @@ public class LocaisService {
         local.setCapacidade(dto.getCapacidadde());
 
         local = locaisRepository.save(local);
-        return new RetornarLocaisDTO(local.getNome(), local.getEndereco(), local.getCapacidadde());
+        return new RetornarLocaisDTO(local.getNome(), local.getEndereco(), local.getCapacidade());
     }
 
     // Método para listar locais com filtro opcional de nome e paginação
@@ -43,12 +47,16 @@ public class LocaisService {
 
     // Método para excluir um local se não houver eventos associados
     public boolean excluirLocal(String id) {
-        Locais local = buscarLocal(id);
-        if (local.getEventos().isEmpty()) {
-            locaisRepository.delete(local);
-            return true;
+        // Verifica se há eventos associados ao local
+        if (eventosRepository.existsByLocalId(id)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O local não pode ser excluído, pois há eventos associados a ele.");
         }
-        return false;  // Retorna falso se o local não puder ser excluído
+
+        Locais local = locaisRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Local não encontrado"));
+
+        locaisRepository.delete(local);
+        return true;
     }
 
     // Método para gerar um relatório de eventos para um local específico

@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventosRepository extends MongoRepository<Eventos, String> {
     Page<Eventos> findByNome(String nome, Pageable pageable);
+    boolean existsByLocalId(String localId);
 }

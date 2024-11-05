@@ -14,6 +14,4 @@ record CadastraLocaisDTO (String nome, String endereco, Integer capacidade) {
     }
 }
 
-record RetornarLocaisDTO (String nome, String endereco, Integer capacidade) {
-
-}
+record RetornarLocaisDTO(String id, String nome, Integer capacidade) {}
